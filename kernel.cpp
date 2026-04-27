@@ -5,6 +5,16 @@ void printf(char* str){
     }
 }
 
+typedef void (*constructor)();
+extern "C" constructor* start_ctors;
+extern "C" constructor* end_ctors;
+
+extern "C" void callConstructors(){
+    for(auto ctor=start_ctors;ctor!=end_ctors;ctor++){
+        (*ctor)();
+    }
+}
+
 extern "C" void kernelMain(void* multiboot_structure,unsigned int magicnumber){
     printf("Hello World! --- https://wiki.osdev.org/");
     while(1);
